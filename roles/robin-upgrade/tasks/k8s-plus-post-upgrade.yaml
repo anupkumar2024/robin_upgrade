@@ -1,0 +1,6 @@
+- name: K8sPlus Post Upgrade
+  shell: cd /root/build/{{ robin_version }} && ./k8splus-script-{{ robin_version }}.sh post-upgrade --host-type=physical --silent --ip-protocol=ipv6
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['primary-master'][0]
+  tags: [v5.4]

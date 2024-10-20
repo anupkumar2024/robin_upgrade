@@ -1,0 +1,6 @@
+- name: Host Post upgarde
+  shell: cd /root/build/{{ robin_version }} && ./host-script-{{ os_version }}-{{ robin_version }}.sh post-upgrade --host-type=physical --yes --force
+  #shell: cd /root/build/{{ robin_version }} && ./host-script-el7-{{ robin_version }}.sh post-upgrade --host-type=physical --yes --force --silent --ip-protocol=ipv6
+  async: 3600
+  poll: 60
+  tags: [v5.4]

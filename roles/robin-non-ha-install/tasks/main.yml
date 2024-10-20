@@ -1,0 +1,12 @@
+---
+# tasks file for robin-non-ha-install
+#- name: Import Artifacts Download
+#  import_tasks: artifacts-download.yaml
+#  tags:
+#    - image-download
+#    - image-load
+
+- name: Import install script
+  import_tasks: robin-install.yaml
+  tags:
+    - v5.4

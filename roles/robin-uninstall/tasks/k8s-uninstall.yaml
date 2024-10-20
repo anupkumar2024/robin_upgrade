@@ -1,0 +1,23 @@
+- name: Uninstall k8 configuration from all worker nodes
+  shell: cd /root/build/{{ robin_version }} && ./k8s-script-{{ os_version }}-{{ robin_version }}.sh  cleanup -y --force
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['worker']
+  tags:
+    - v5.4
+
+- name: Uninstall k8 configuration from secondary master nodes
+  shell: cd /root/build/{{ robin_version }} && ./k8s-script-{{ os_version }}-{{ robin_version }}.sh  cleanup -y --force
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['secondary-master']
+  tags:
+    - v5.4
+
+- name: Uninstall k8 configuration from primary master nodes
+  shell: cd /root/build/{{ robin_version }} && ./k8s-script-{{ os_version }}-{{ robin_version }}.sh  cleanup -y --force
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['primary-master']
+  tags:
+    - v5.4

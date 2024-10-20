@@ -1,0 +1,4 @@
+---
+# vars file for robin-non-ha-install
+robin_user: admin
+robin_pass: Robin123

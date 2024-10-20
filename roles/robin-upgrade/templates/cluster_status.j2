@@ -1,0 +1,26 @@
+#!/bin/bash
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+result_path=/root/build/{{ robin_version }}/output/$1
+robin login {{ robin_user }} --password {{ robin_pass }}
+mkdir -p $result_path
+robin host list > $result_path/robin_host
+kubectl get node > $result_path/k8s_host
+robin volume list > $result_path/robin_volume
+robin disk list > $result_path/robin_disk
+kubectl get pods -A > $result_path/k8s_pods
+robin app list > $result_path/robin_app
+robin host list --services > $result_path/robin_services
+robin host list > $result_path/robin_host
+robin collection list > $result_path/robin_collection
+kubectl get pv > $result_path/k8s_pv
+
+if [[ "$1" == "pre_upgrade" ]] || [[ "$1" == "robin_post_upgrade" ]]; then
+    kubectl get pods -A -o yaml > $result_path/k8s_pods.yaml
+
+    kubectl get pvc -A > $result_path/k8s_pvc
+    kubectl get pvc -A -o yaml > $result_path/k8s_pvc.yaml
+    kubectl get deployment -A -o yaml > $result_path/k8s_deployment.yaml
+    kubectl get sts -A -o yaml > $result_path/k8s_sts.yaml
+    kubectl get ds -A -o yaml > $result_path/k8s_ds.yaml
+    robin version > $result_path/robin_version
+fi

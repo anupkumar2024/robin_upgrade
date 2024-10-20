@@ -1,0 +1,110 @@
+{
+    "k8s": [],
+    "robin": {
+        "apps": [],
+        "vnodes": [],
+        "users": [
+            {
+                "id": 5,
+                "username": "admin",
+                "current_tenantid": 1,
+                "firstname": "Robin",
+                "lastname": "Systems",
+                "email": null,
+                "tenantid": 1
+            }
+        ],
+        "tenants": [
+            {
+                "id": 1,
+                "name": "Administrators"
+            }
+        ],
+        "bundles": [],
+        "nodes": [
+            {
+                "id": 1,
+                "name": "centos-60-241.robinsystems.com",
+                "zoneid": 1,
+                "rpoolid": 1,
+                "nvnodes": 0,
+                "state": "ONLINE",
+                "cpu": 16,
+                "mem": 33422213120,
+                "services": {
+                    "iomgr-server": {
+                        "ActiveState": "active"
+                    },
+                    "consul-client": {
+                        "ActiveState": "active"
+                    },
+                    "robin-agent": {
+                        "ActiveState": "active"
+                    },
+                    "monitor-server": {
+                        "ActiveState": "active"
+                    },
+                    "consul_dns": true
+                },
+                "mem_for_storage": 1073741824,
+                "memory_used": 0,
+                "cores_used": 0,
+                "cpu_prov_factor": 1,
+                "cpu_cores_present": 16,
+                "k8s_node_name": "centos-60-241.robinsystems.com",
+                "gpu": 0,
+                "reserved_cpus": [
+                    0
+                ]
+            },
+            {
+                "id": 2,
+                "name": "centos-60-239.robinsystems.com",
+                "zoneid": 1,
+                "rpoolid": 1,
+                "nvnodes": 0,
+                "state": "ONLINE",
+                "cpu": 16,
+                "mem": 33422180352,
+                "services": {
+                    "iomgr-server": {
+                        "ActiveState": "active"
+                    },
+                    "consul-client": {
+                        "ActiveState": "active"
+                    },
+                    "robin-agent": {
+                        "ActiveState": "active"
+                    },
+                    "monitor-server": {
+                        "ActiveState": "active"
+                    },
+                    "consul_dns": true
+                },
+                "mem_for_storage": 1073741824,
+                "memory_used": 0,
+                "cores_used": 0,
+                "cpu_prov_factor": 1,
+                "cpu_cores_present": 16,
+                "k8s_node_name": "centos-60-239.robinsystems.com",
+                "gpu": 0,
+                "reserved_cpus": [
+                    0
+                ]
+            }
+        ],
+        "zones": [
+            {
+                "id": 1,
+                "name": "default",
+                "zoneid": 1729370636
+            }
+        ],
+        "rpools": [
+            {
+                "id": 1,
+                "name": "default"
+            }
+        ]
+    }
+}

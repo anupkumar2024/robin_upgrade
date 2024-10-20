@@ -1,0 +1,14 @@
+- name: Clean artifactory folder from all nodes
+  file:
+    path: "{{ artifactory_folder }}"
+    state: absent
+  loop:
+    - "{{ artifactory_folder }}" 
+    - /var/log/robin
+    - /root/bin
+    - /root/robin 
+    - /root/robin-k8splus-script.log  
+    - /root/robin-script.log
+  tags:
+    - v5.4
+

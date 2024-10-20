@@ -1,0 +1,29 @@
+- name: Uninstall Robin CNP from all worker nodes
+  shell: source /root/.bashrc && /root/bin/robin version && cd /root/build/{{ robin_version }} && ./robin-script-{{ robin_version }}.sh  cleanup -y
+  args:
+    executable: /bin/bash
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['worker']
+  tags:
+    - v5.4
+
+- name: Uninstall Robin CNP from secondary master nodes
+  shell: source /root/.bashrc && /root/bin/robin version && cd /root/build/{{ robin_version }} && ./robin-script-{{ robin_version }}.sh  cleanup -y
+  args:
+    executable: /bin/bash
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['secondary-master']
+  tags:
+    - v5.4
+
+- name: Uninstall Robin CNP from primary master node
+  shell: source /root/.bashrc && /root/bin/robin version && cd /root/build/{{ robin_version }} && ./robin-script-{{ robin_version }}.sh  cleanup -y
+  args:
+    executable: /bin/bash
+  async: 3600
+  poll: 60
+  when: inventory_hostname  in groups['primary-master']
+  tags:
+    - v5.4

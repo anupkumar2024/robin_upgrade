@@ -1,0 +1,56 @@
+#- name: Create a directory if it does not exist
+#  ansible.builtin.file:
+#    path: /root/build/{{ robin_version }}
+#    state: directory
+#    mode: '0755'
+#  tags:
+#    - image-load
+#    - image-download
+#
+#- name: Download Files from artifactory
+#  import_role:
+#    name: artifactory-download
+#  tags:
+#    - v5.3
+#    - v5.4
+#    - image-load
+#    - image-download
+
+# - name: Load Docker Images
+#   shell: cd /root/build/{{ robin_version }} && ./{{ script_name }} prepare-upgrade-hosts --robin-image-archive=robinbinimg-{{ robin_version }}.tar.gz  --k8s-image-archive=k8s-images-{{ robin_version }}.tar.gz --username={{ robin_user }} --password={{ robin_pass }}
+#   async: 3600
+#   poll: 60
+#   tags:
+#     - image-load
+#     - v5.4
+
+#- name: capture cluster state before upgrade
+#  import_role:
+#    name: cluster-state
+#  vars:
+#    result_path: /root/build/{{ robin_version }}/pre-upgrade
+#    cluster_state: "full"
+#  tags:
+#    - always
+
+#- name: Disable robin_k8s_extension
+#  shell: |
+#    robin config update manager robin_k8s_extension False
+#  when: inventory_hostname in groups['primary-master'][0]
+#  tags: [v5.4]
+
+- name: give permission to binary
+  shell: chmod -R +x {{ artifactory_folder }}{{ robin_version }}
+
+
+- name: Include host preupgrade
+  import_tasks: host-pre-upgrade.yaml
+  tags: [v5.4]
+
+- name: Include ks8 preupgrade
+  import_tasks: k8s-pre-upgrade.yaml
+  tags: [v5.4]
+
+- name: Include robin preupgrade
+  import_tasks: robin-pre-upgrade.yaml
+  tags: [v5.4]

@@ -1,0 +1,25 @@
+- name: get app json file
+  shell: source /root/.bash_profile && /root/bin/robin version && robin login {{ robin_user }} --password {{ robin_pass }} && robin app list --json > app.json
+  args:
+    executable: /bin/bash
+
+- name: Fetch app.json from remote host to local directory
+  fetch:
+    src: /root/app.json
+    dest: "{{ playbook_dir }}/roles/robin-uninstall/files/app.json"
+    flat: yes
+
+- name: Load data from JSON file
+  set_fact:
+    app_data: "{{ lookup('file', 'app.json') | from_json }}"
+
+- name: Delete all robin app
+  shell: source /root/.bash_profile && /root/bin/robin version && robin login {{ robin_user }} --password {{ robin_pass }} && robin app delete {{ item.name }} --iter -y --wait
+  args:
+    executable: /bin/bash
+  loop: "{{ app_data.robin.apps }}"
+
+- name: Delete app.json file
+  file:
+    path: "{{ playbook_dir }}/ro;es/robin-uninstall/files/app.json"
+    state: absent
