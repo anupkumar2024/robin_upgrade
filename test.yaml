@@ -1,0 +1,14 @@
+---
+- name: test
+  hosts: centos-60-241.robinsystems.com
+  gather_facts: no
+  tasks:
+    - name: get robin version
+      shell: source /root/.bash_profile && robin version
+      args:
+        executable: /bin/bash
+      register: robin_version  
+
+    - name: debug
+      debug:
+        msg: "{{ robin_version }}"
