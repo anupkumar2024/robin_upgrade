@@ -1,0 +1,31 @@
+---
+# tasks file for robin-upgrade
+
+# - name: Import precheck
+#   import_tasks: pre-check.yaml
+#   tags: precheck
+
+# - name: Import Artifacts Download
+#   import_tasks: artifacts-download.yaml
+#   tags:
+#     - image-download
+#     - image-load
+
+
+- name: Import preupgrade
+  import_tasks: pre-upgrade.yaml
+  tags:
+    - v5.3
+    - v5.4
+
+- name: Import upgrade
+  import_tasks: upgrade.yaml
+  tags:
+    - v5.3
+    - v5.4
+
+- name: Import Post upgrade
+  import_tasks: post-upgrade.yaml
+  tags:
+    - v5.3
+    - v5.4

@@ -1,0 +1,49 @@
+- name: Robin Post upgrade
+  shell: source /root/.bash_profile && cd /root/build/{{ robin_version }} && ./robin-script-{{ robin_version }}.sh post-upgrade --yes --force --username={{ robin_user }} --password={{ robin_pass }} --silent
+  args:
+    executable: /bin/bash
+  #shell: cd /root/build/{{ robin_version }} && ./robin-script-{{ robin_version }}.sh post-upgrade --yes --force --username={{ robin_user }} --password={{ robin_pass }} --silent --ip-protocol=ipv6
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['primary-master']
+  tags: [v5.4]
+
+#- name: Robin post upgrade for 5.3
+#  tags: [v5.3]
+#  block:
+#  - name: Post Robin upgrade 1
+#    shell: cd /root/build/{{ robin_version }} && ./{{ script_name }} post-robin-upgrade-all-hosts  --username={{ robin_user }} --password={{ robin_pass }}
+#
+#  - name: Post Robin upgrade 2
+#    shell: cd /root/build/{{ robin_version }} && ./{{ script_name }} post-robin-upgrade  --username={{ robin_user }} --password={{ robin_pass }}
+#    async: 3600
+#    poll: 60
+#    when: inventory_hostname in groups['primary-master'][0]
+#
+#  - name: Check robin mutatingwebhookconfigurations
+#    shell: kubectl get mutatingwebhookconfigurations | egrep '^k8srobin|^robin' | wc -l
+#    register: condition_result
+#
+#  - name: Rebounce robink8s-serverext pods
+#    shell: kubectl delete pods  $(kubectl get pods -n robinio -lapp=robink8s-serverext --no-headers=true  | awk '{print $1}' | head -1) -n robinio
+#    when: inventory_hostname in groups['primary-master'][0] and condition_result.stdout != "8"
+#
+#  - name: Wait for all pods to be up and running
+#    shell: |
+#      while [[ $(kubectl get pods -n robinio -l app=robink8s-serverext --no-headers | grep -c ' Running ') -ne $(kubectl get daemonset robink8s-serverext -n robinio -o=jsonpath='{.status.desiredNumberScheduled}') ]]; do
+#        echo "Waiting for all pods to be up and running..."
+#        sleep 10
+#      done
+#    when: inventory_hostname in groups['primary-master'][0] and condition_result.stdout != "8"
+#
+#  - name: Rebounce robin server
+#    shell: kubectl exec -it $(kubectl get pods -l robin.io/robinrole=master -o name -n robinio) -n robinio -- systemctl restart robin-server&
+#    when: inventory_hostname in groups['primary-master'][0] and condition_result.stdout != "8"
+#
+#  - name: wait robin server service to be up and running
+#    shell: |
+#      while kubectl exec -it $(kubectl get pods -l robin.io/robinrole=master -o name -n robinio) -n robinio -- robin-service-status | grep robin-server | grep -qv active; do
+#        echo "Waiting for robin server service to be up and running..."
+#        sleep 10
+#      done
+#    when: inventory_hostname in groups['primary-master'][0] and condition_result.stdout != "8"

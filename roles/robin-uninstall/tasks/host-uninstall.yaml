@@ -1,0 +1,6 @@
+- name: Uninstall hosts configuration from all nodes
+  shell: cd /root/build/{{ robin_version }} && ./host-script-{{ os_version }}-{{ robin_version }}.sh uninstall -y --force
+  async: 3600
+  poll: 60
+  tags:
+    - v5.4

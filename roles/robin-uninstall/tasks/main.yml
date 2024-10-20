@@ -1,0 +1,35 @@
+---
+# tasks file for robin-uninstall
+
+- name: Import app clean up
+  import_tasks: robin-app-cleanup.yaml
+  when: inventory_hostname  in groups['primary-master']
+  ignore_errors: yes
+  tags:
+    - v5.4
+
+- name:  Import cnp uninstall
+  import_tasks: robin-cnp-uninstall.yaml
+  # ignore_errors: yes
+  tags:
+    - v5.4
+
+- name: Import k8splus uninstall
+  import_tasks: k8splus-uninstall.yaml
+  tags:
+    - v5.4
+
+- name: Import k8s uninstall
+  import_tasks: k8s-uninstall.yaml
+  tags:
+    - v5.4
+
+- name: Import hosts uninstall
+  import_tasks: host-uninstall.yaml
+  tags:
+    - v5.4
+
+- name: Clean up artifactory folder
+  import_tasks: artifactory-cleanup.yaml
+  tags:
+    - v5.4

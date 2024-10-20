@@ -1,0 +1,9 @@
+- name: Get Robin version
+  shell: source /root/.bash_profile && robin version
+  args:
+    executable: /bin/bash
+  register: robin_version_result
+  ignore_errors: yes
+  #failed_when: "'robin: command not found' not in robin_version_result.stderr"
+  tags:
+    - v5.4

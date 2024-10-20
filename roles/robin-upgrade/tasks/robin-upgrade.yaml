@@ -1,0 +1,31 @@
+- name: Robin upgrade
+  shell: source /root/.bashrc && cd /root/build/{{ robin_version }} && ./robin-script-{{ robin_version }}.sh upgrade --kubeconfig=/tmp/kube.config --yes --force --username={{ robin_user }} --password={{ robin_pass }} --silent --ip-protocol=ipv4
+  args:
+    executable: /bin/bash
+  #shell: cd /root/build/{{ robin_version }} && ./robin-script-{{ robin_version }}.sh upgrade --kubeconfig=/tmp/kube.config --yes --force --username={{ robin_user }} --password={{ robin_pass }} --silent --ip-protocol=ipv6
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['primary-master']
+  tags:
+    - v5.4
+
+#- name: Robin upgrade for 5.3
+#  tags: [v5.3]
+#  block:
+#    - name: Check if kms=vault is present
+#      command: grep -q "kms=vault" /etc/robin/bootstrap/bootstrap_details
+#      register: grep_result
+#      ignore_errors: yes
+#      when: inventory_hostname in groups['primary-master'][0]
+#
+#    - name: Upgrade Robin on kms=vault
+#      shell: cd /root/build/{{ robin_version }} && ./{{ script_name }} upgrade-robin  --username={{ robin_user }} --password={{ robin_pass }} --vault-addr=https://psvau-service.1u1.local:8200
+#      async: 3600
+#      poll: 60
+#      when: grep_result.rc == 0 and inventory_hostname in groups['primary-master'][0]
+#
+#    - name: Upgrade Robin on kms=k8s
+#      shell: cd /root/build/{{ robin_version }} && ./{{ script_name }} upgrade-robin  --username={{ robin_user }} --password={{ robin_pass }}
+#      async: 3600
+#      poll: 60
+#      when: grep_result.rc != 0 and inventory_hostname in groups['primary-master'][0]

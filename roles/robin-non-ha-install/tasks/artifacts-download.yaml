@@ -1,0 +1,18 @@
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ artifactory_folder }}{{ robin_version }}"
+    state: directory
+    mode: '0755'
+  tags:
+    - image-load
+    - image-download
+
+- name: Download Files from artifactory
+  import_role:
+    name: artifactory-download
+  tags:
+    - image-load
+    - image-download
+
+- name: give permission to binary
+  shell: chmod -R +x {{ artifactory_folder}}{{ robin_version }}

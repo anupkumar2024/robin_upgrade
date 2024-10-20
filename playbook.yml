@@ -1,0 +1,33 @@
+---
+- name: Apply roles to hosts
+  hosts: all
+  become_user: root
+  gather_facts: no
+  no_log: false
+  roles:
+    - role: robin-non-ha-install
+      tags:
+        - non-ha-install
+      ignore_errors: yes  
+
+    - role: robin-upgrade
+      tags:
+        - upgrade
+
+    - role: robin-uninstall
+      tags:
+        - uninstall
+
+    - role: artifactory-download
+      tags:
+        - download
+      ignore_errors: yes  
+
+    - role: robin-precheck
+      tags:
+        - precheck
+      ignore_errors: yes  
+
+    - role: cluster-state
+      tags:
+        - cluster-status

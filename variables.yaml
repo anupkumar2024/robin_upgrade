@@ -1,0 +1,17 @@
+---
+# versions mentioned below will be used to install or upgrade
+# change the build version and correct version in artifactory url to upgrade or install 
+
+artifactory_url: http://builds.robinsystems.com:8080/view/5.4.x/job/Robin_5.4.3_Binary/355/artifact/artifacts/
+build: 355
+os_version: el8
+robin_version: 5.4.3-355 
+release: 5.4.3
+artifactory_folder: /root/build/
+robin_user: admin
+robin_pass: Robin123
+task: pre_upgrade # can be values pre_upgrade,post_upgrade for running ansible role cluster-state
+
+# role robin-ha-install
+vip:
+vrid: 
