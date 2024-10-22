@@ -19,7 +19,7 @@
 
 - name: fetch kube config file locally
   fetch:
-    src: "{{ lookup('env', 'HOME') }}/.kube/config"
+    src: "/root/.kube/config"
     dest: "{{ playbook_dir }}/roles/robin-non-ha-install/files/config"
     flat: yes
   when: inventory_hostname  in groups['primary-master']
