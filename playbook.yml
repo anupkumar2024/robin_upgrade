@@ -8,20 +8,22 @@
     - role: robin-non-ha-install
       tags:
         - non-ha-install
-      ignore_errors: yes  
+      any_errors_fatal: true  
 
     - role: robin-upgrade
       tags:
         - upgrade
+      any_errors_fatal: true  
 
     - role: robin-uninstall
       tags:
         - uninstall
+      any_errors_fatal: true  
 
     - role: artifactory-download
       tags:
         - download
-      ignore_errors: yes  
+      any_errors_fatal: true 
 
     - role: robin-precheck
       tags:
