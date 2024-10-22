@@ -57,7 +57,7 @@
 - name: Run k8splus script on primary master node
   shell: |
     cd {{artifactory_folder}}{{ robin_version }}
-    ./k8splus-script-{{ robin_version }}.sh setup --kubeconfig={{ lookup('env', 'HOME') }}/.kube/config --host-type=physical --ignore-warnings
+    ./k8splus-script-{{ robin_version }}.sh setup --kubeconfig=/root/.kube/config --host-type=physical --ignore-warnings
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master']
@@ -68,7 +68,7 @@
   shell: |
     source /root/.bash_profile
     cd {{artifactory_folder}}{{ robin_version }}
-    ./robin-script-{{ robin_version }}.sh setup --username={{ robin_user }} --password={{ robin_pass }} --kubeconfig={{ lookup('env','HOME') }}/.kube/config --update-coredns --yes
+    ./robin-script-{{ robin_version }}.sh setup --username={{ robin_user }} --password={{ robin_pass }} --kubeconfig=/root/.kube/config --update-coredns --yes
   args:
     executable: /bin/bash
   async: 3600
