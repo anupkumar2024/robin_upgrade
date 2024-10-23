@@ -1,0 +1,20 @@
+---
+- name: Check initial connectivity
+  ansible.builtin.ping:
+
+- name: Reboot the machine
+  ansible.builtin.reboot:
+    reboot_timeout: 600  # Adjust the timeout as needed
+
+- name: Wait for the node to come back online
+  ansible.builtin.wait_for_connection:
+    timeout: 300  # Adjust the timeout as needed
+
+- name: Verify the system is fully ready by checking uptime
+  ansible.builtin.command:
+    cmd: uptime
+  register: uptime_result
+
+- name: Display uptime result
+  ansible.builtin.debug:
+    msg: "Uptime result: {{ uptime_result.stdout }}"

@@ -33,3 +33,10 @@
   import_tasks: artifactory-cleanup.yaml
   tags:
     - v5.4
+
+- name: Reboot nodes
+  import_tasks: nodes-reboot.yaml
+  ignore_errors: yes
+  any_errors_fatal: false
+  tags:
+    - reboot_check

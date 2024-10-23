@@ -2,10 +2,10 @@
 # versions mentioned below will be used to install or upgrade
 # change the build version and correct version in artifactory url to upgrade or install 
 
-artifactory_url: http://builds.robinsystems.com:8080/view/5.4.x/job/Robin_5.4.3_Binary/558/artifact/artifacts/
-build: 558
+artifactory_url: http://builds.robinsystems.com:8080/view/5.4.x/job/Robin_5.4.3_Binary/564/artifact/artifacts/
+build: 564
 os_version: el8
-robin_version: 5.4.3-558
+robin_version: 5.4.3-564
 release: 5.4.3
 artifactory_folder: /root/build/
 robin_user: admin

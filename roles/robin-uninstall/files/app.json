@@ -1,21 +1,5 @@
 {
-    "k8s": [
-        {
-            "name": "nginx-app",
-            "kind": "helm",
-            "state": "ONLINE",
-            "tenant": "Administrators",
-            "username": "admin",
-            "namespace": "anupdemo",
-            "num_snapshots": 0,
-            "num_backups": 0,
-            "query": "{\"apps\":[\"helm\\\/nginx-app\"],\"selectors\":[],\"resources\":[\"pod\\\/nginx-server-0\",\"service\\\/anup-nginx\",\"statefulset.apps\\\/nginx-server\"],\"namespace\":\"anupdemo\"}",
-            "snapshot_schedule": {},
-            "backup_schedule": null,
-            "id": "1bc6215c8f1811efa4770b9c39643dbc",
-            "type": "MASTER"
-        }
-    ],
+    "k8s": [],
     "robin": {
         "apps": [],
         "vnodes": [],
@@ -46,7 +30,7 @@
                 "nvnodes": 0,
                 "state": "ONLINE",
                 "cpu": 16,
-                "mem": 33422192640,
+                "mem": 33422168064,
                 "services": {
                     "iomgr-server": {
                         "ActiveState": "active"
@@ -81,7 +65,7 @@
                 "nvnodes": 0,
                 "state": "ONLINE",
                 "cpu": 16,
-                "mem": 33422204928,
+                "mem": 33422184448,
                 "services": {
                     "iomgr-server": {
                         "ActiveState": "active"
@@ -113,7 +97,7 @@
             {
                 "id": 1,
                 "name": "default",
-                "zoneid": 1729385000
+                "zoneid": 1729595622
             }
         ],
         "rpools": [
