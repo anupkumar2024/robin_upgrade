@@ -1,5 +1,6 @@
 # Ansible to upgrade/install/precheck Robin 
 ## Make sure ansible is installed on the control node
+## Update host details on inventory/hosts.ini file
 
 # Examples
 ## To download robin binaries
