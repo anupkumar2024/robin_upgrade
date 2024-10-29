@@ -1,55 +1,55 @@
-# - name: Run host script on all nodes
-#   shell: cd {{artifactory_folder}}{{ robin_version }} && ./host-script-{{ os_version }}-{{ robin_version }}.sh install --robin-image-archive=robinbinimg-{{ robin_version }}.tar.gz --k8s-image-archive=k8s-images-{{ robin_version }}.tar.gz --host-type=physical --ignore-warnings
-#   async: 3600
-#   poll: 60
-#   tags: [v5.4]
-#   register: host_script_result
+- name: Run host script on all nodes
+  shell: cd {{artifactory_folder}}{{ robin_version }} && ./host-script-{{ os_version }}-{{ robin_version }}.sh install --robin-image-archive=robinbinimg-{{ robin_version }}.tar.gz --k8s-image-archive=k8s-images-{{ robin_version }}.tar.gz --host-type=physical --ignore-warnings
+  async: 3600
+  poll: 60
+  tags: [v5.4]
+  register: host_script_result
 
 
-# - name: Run k8s script on primary master node
-#   shell: cd {{artifactory_folder}}{{ robin_version }} && ./k8s-script-{{ os_version }}-{{ robin_version }}.sh server --host-type=physical --ignore-warnings
-#   async: 3600
-#   poll: 60
-#   when: inventory_hostname in groups['primary-master'] and host_script_result.failed == false
-#   tags: [v5.4]
+- name: Run k8s script on primary master node
+  shell: cd {{artifactory_folder}}{{ robin_version }} && ./k8s-script-{{ os_version }}-{{ robin_version }}.sh server --host-type=physical --ignore-warnings
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['primary-master'] and host_script_result.failed == false
+  tags: [v5.4]
 
 
-# - name: fetch kube config file locally
-#   fetch:
-#     src: "/root/.kube/config"
-#     dest: "{{ playbook_dir }}/roles/robin-non-ha-install/files/config"
-#     flat: yes
-#   when: inventory_hostname  in groups['primary-master']
-#   register: fetch_kube_config
+- name: fetch kube config file locally
+  fetch:
+    src: "/root/.kube/config"
+    dest: "{{ playbook_dir }}/roles/robin-non-ha-install/files/config"
+    flat: yes
+  when: inventory_hostname  in groups['primary-master']
+  register: fetch_kube_config
 
 
-# - name: Copy kube config to remote nodes
-#   copy:
-#     src: "{{ playbook_dir }}/roles/robin-non-ha-install/files/config"
-#     dest: /var/tmp/config
-#   delegate_to: "{{ item }}"
-#   with_items: "{{ groups['worker'] + groups['secondary-master'] }}"
-#   tags: [v5.4]
+- name: Copy kube config to remote nodes
+  copy:
+    src: "{{ playbook_dir }}/roles/robin-non-ha-install/files/config"
+    dest: /var/tmp/config
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['worker'] + groups['secondary-master'] }}"
+  tags: [v5.4]
 
 
-# - name: Run k8s script on all worker nodes
-#   shell: |
-#     cd {{artifactory_folder}}{{ robin_version }}
-#     ./k8s-script-{{ os_version }}-{{ robin_version }}.sh worker --kubeconfig=/var/tmp/config --host-type=physical --ignore-warnings
-#   async: 3600
-#   poll: 60
-#   when: inventory_hostname in groups['worker']
-#   tags: [v5.4]
+- name: Run k8s script on all worker nodes
+  shell: |
+    cd {{artifactory_folder}}{{ robin_version }}
+    ./k8s-script-{{ os_version }}-{{ robin_version }}.sh worker --kubeconfig=/var/tmp/config --host-type=physical --ignore-warnings
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['worker']
+  tags: [v5.4]
 
 
-# - name: Run k8splus script on primary master node
-#   shell: |
-#     cd {{artifactory_folder}}{{ robin_version }}
-#     ./k8splus-script-{{ robin_version }}.sh setup --kubeconfig=/root/.kube/config --host-type=physical --ignore-warnings
-#   async: 3600
-#   poll: 60
-#   when: inventory_hostname in groups['primary-master']
-#   tags: [v5.4]
+- name: Run k8splus script on primary master node
+  shell: |
+    cd {{artifactory_folder}}{{ robin_version }}
+    ./k8splus-script-{{ robin_version }}.sh setup --kubeconfig=/root/.kube/config --host-type=physical --ignore-warnings
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['primary-master']
+  tags: [v5.4]
 
 
 - name: Run robin script on primary master node
