@@ -1,0 +1,19 @@
+---
+- name: Add the license server url
+  shell: source /root/.bashrc && robin config update cluster license_server_url {{ LICENSE_PROXY_URL }}
+  args:
+    executable: /bin/bash
+
+- name: Add the license renew period
+  shell: source /root/.bashrc && robin config update cluster license_renew_period {{ LICENSE_RENEW_PERIOD }}
+  args:
+    executable: /bin/bash
+
+- name: Activating the license
+  shell: source /root/.bashrc && robin license renew
+  args:
+    executable: /bin/bash
+  retries: 5
+  delay: 10
+  register: output
+  until: output.rc == 0

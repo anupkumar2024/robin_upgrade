@@ -6,7 +6,18 @@
 #    - image-download
 #    - image-load
 
+- name: Import bashrc file
+  import_tasks: update-bashrc.yaml
+  tags:
+    - always
+
 - name: Import install script
   import_tasks: robin-install.yaml
   tags:
     - v5.4
+
+# - name: Import robin license activation
+#   import_tasks: license-activate.yaml
+#   tags:
+#     - activate_license
+#   when: inventory_hostname in groups['primary-master']  

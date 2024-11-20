@@ -15,3 +15,10 @@ task: pre_upgrade # can be values pre_upgrade,post_upgrade for running ansible r
 # role robin-ha-install
 vip:
 vrid: 
+
+# license activation
+## LICENSE DETAILS
+LICENSE_PROXY_URL: 'http://centos-60-214:5000/'
+LICENSE_RENEW_PERIOD: 4
+
+
