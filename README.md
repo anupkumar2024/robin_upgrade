@@ -22,7 +22,7 @@
 ## Capture cluster state before upgrade
   ansible-playbook playbook.yml  --ask-pass --tags cluster-status --extra-vars "@variables.yaml" 
 
-## to upgrade
+## To upgrade
 1. update variables.yaml file with correct robin version
 2. run ansible cmd
    ansible-playbook playbook.yml  --ask-pass --tags upgrade --extra-vars "@variables.yaml"
@@ -30,11 +30,11 @@
 ## Adhoc command
 ansible all -m ansible.builtin.yum -a "name=bind-utils state=present" -u root  --ask-pass   
    
-# for macos:
-## install python3  and run below cmds
+# For macos:
+## Install python3  and run below cmds
 pip install ansible
 pip install paramiko
 
-## use ansible cmds as belwow from macos:
+## Use ansible cmds as belwow from macos:
 ansible-playbook playbook.yml -c paramiko --ask-pass --tags non-ha-install --extra-vars "@variables.yaml"
 ansible all -m ansible.builtin.yum -a "name=bind-utils state=present" -u root  --ask-pass -c paramiko
