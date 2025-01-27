@@ -2,7 +2,7 @@
   shell: cd {{artifactory_folder}}{{ robin_version }} && ./host-script-{{ os_version }}-{{ robin_version }}.sh install --robin-image-archive=robinbinimg-{{ robin_version }}.tar.gz --k8s-image-archive=k8s-images-{{ robin_version }}.tar.gz --host-type=physical --ignore-warnings
   async: 3600
   poll: 60
-  tags: [v5.4]
+  tags: [v5.4, host-script-install]
   register: host_script_result
 
 
@@ -11,7 +11,7 @@
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master'] and host_script_result.failed == false
-  tags: [v5.4]
+  tags: [v5.4, k8s-script-install-primary]
 
 
 - name: fetch kube config file locally
@@ -29,7 +29,7 @@
     dest: /var/tmp/config
   delegate_to: "{{ item }}"
   with_items: "{{ groups['worker'] + groups['secondary-master'] }}"
-  tags: [v5.4]
+  tags: [v5.4, copy-kubeconfig-all]
 
 
 - name: Run k8s script on all worker nodes
@@ -39,7 +39,7 @@
   async: 3600
   poll: 60
   when: inventory_hostname in groups['worker']
-  tags: [v5.4]
+  tags: [v5.4, k8s-script-install-all-worker]
 
 
 - name: Run k8splus script on primary master node
@@ -49,7 +49,7 @@
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master']
-  tags: [v5.4]
+  tags: [v5.4, k8splus-script-install-primary]
 
 
 - name: Run robin script on primary master node
@@ -62,7 +62,7 @@
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master']
-  tags: [v5.4]
+  tags: [v5.4, robin-script-install-primary]
 
 
 - name: Assign default rpool to each hosts and add roles

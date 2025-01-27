@@ -1,6 +1,6 @@
-- name: Clean artifactory folder from all nodes
+- name: Clean artifactory and logs folder from all nodes
   file:
-    path: "{{ artifactory_folder }}"
+    path: "{{ item }}"
     state: absent
   loop:
     - "{{ artifactory_folder }}" 
@@ -9,6 +9,26 @@
     - /root/robin 
     - /root/robin-k8splus-script.log  
     - /root/robin-script.log
+    - /var/log/robin-host-script.log
+    - /var/log/robin-k8s-script.log
+    - /var/log/robin-tcmur-fakehandler.log
+    - /var/log/pods
+    - /var/log/containers
+    - /var/log/multus.log
+    - /var/log/openvswitch
+    - /var/log/calico
+    - /var/log/sriovdp
+    - /var/log/kubernetes
+    - /opt/cni
+    - /opt/containerd
+    - /etc/robin
+    - /etc/docker
+    - /var/lib/docker
+    - /var/lib/dockershim
+    - var/lib/containerd
+    - /var/lib/kubelet
+    - /var/lib/calico
+    - /var/lib/cni
+    - /var/lib/cri-dockerd
   tags:
     - v5.4
-

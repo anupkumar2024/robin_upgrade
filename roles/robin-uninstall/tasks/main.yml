@@ -7,32 +7,38 @@
   ignore_errors: yes
   tags:
     - v5.4
+    - robin-app-cleanup
 
 - name:  Import cnp uninstall
   import_tasks: robin-cnp-uninstall.yaml
   # ignore_errors: yes
   tags:
     - v5.4
+    - robin-cnp-uninstall
 
 - name: Import k8splus uninstall
   import_tasks: k8splus-uninstall.yaml
   tags:
     - v5.4
+    - k8splus-uninstall
 
 - name: Import k8s uninstall
   import_tasks: k8s-uninstall.yaml
   tags:
     - v5.4
+    - k8s-uninstall
 
 - name: Import hosts uninstall
   import_tasks: host-uninstall.yaml
   tags:
     - v5.4
+    - host-uninstall
 
 - name: Clean up artifactory folder
   import_tasks: artifactory-cleanup.yaml
   tags:
     - v5.4
+    - artifactory-cleanup
 
 - name: Reboot nodes
   import_tasks: nodes-reboot.yaml

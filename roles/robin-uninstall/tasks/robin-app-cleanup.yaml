@@ -2,6 +2,8 @@
   shell: source /root/.bash_profile && rm -rf app.json && robin login {{ robin_user }} --password {{ robin_pass }} && robin app list --json > app.json
   args:
     executable: /bin/bash
+  async: 60  # Maximum time in seconds the task is allowed to run
+  poll: 0   
 
 - name: Fetch app.json from remote host to local directory
   fetch:
@@ -17,6 +19,8 @@
   shell: source /root/.bash_profile && robin login {{ robin_user }} --password {{ robin_pass }} && robin app delete {{ item.name }} --iter -y --wait
   args:
     executable: /bin/bash
+  async: 60  # Maximum time in seconds the task is allowed to run
+  poll: 0   
   loop: "{{ app_data.robin.apps }}"
 
 - name: Delete app.json file
