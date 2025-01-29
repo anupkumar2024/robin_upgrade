@@ -10,7 +10,7 @@
 - name: Run k8s script on primary master node
   shell: |
     cd {{artifactory_folder}}{{ robin_version }} 
-    ./k8s-script-{{ os_version }}-{{ robin_version }}.sh server master --vip={{ vip }} --vrid={{ vrid }} --host-type=physical --ignore-warnings
+    ./k8s-script-{{ os_version }}-{{ robin_version }}.sh master --vip={{ vip }} --vrid={{ vrid }} --host-type=physical --ignore-warnings
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master']
@@ -38,7 +38,7 @@
 - name: Run k8s script on other master nodes
   shell: |
     cd {{artifactory_folder}}{{ robin_version }} 
-    ./k8s-script-{{ os_version }}-{{ robin_version }}.sh server master --kubeconfig=/var/tmp/config --host-type=physical --ignore-warnings
+    ./k8s-script-{{ os_version }}-{{ robin_version }}.sh master --kubeconfig=/var/tmp/config --host-type=physical --ignore-warnings
   async: 3600
   poll: 60
   when: inventory_hostname in groups['secondary-master']

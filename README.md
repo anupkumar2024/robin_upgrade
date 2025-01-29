@@ -40,7 +40,7 @@ ansible-playbook playbook.yml --list-tags
 
 
 ## skip single tag for e.g you want to skip host-install , you can run as below
-ansible-playbook playbook.yml -u root --ask-pass --tags k8s-script-install-all-worker,k8s-script-install-primary,k8splus-script-install-primary --extra-vars "@variables.yaml"
+ansible-playbook playbook.yml -u root --ask-pass --skip-tags k8s-script-install-all-worker,k8s-script-install-primary,k8splus-script-install-primary --extra-vars "@variables.yaml"
 
 ## Adhoc command
 ansible all -m ansible.builtin.yum -a "name=bind-utils state=present" -u root  --ask-pass   
