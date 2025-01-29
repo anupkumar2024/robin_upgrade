@@ -27,6 +27,21 @@
 2. run ansible cmd
    ansible-playbook playbook.yml  --ask-pass --tags upgrade --extra-vars "@variables.yaml"
 
+## To install with tags for single task
+ansible-playbook playbook.yml --list-tags
+
+1. playbook: playbook.yml
+
+   play #1 (all): Apply roles to hosts	TAGS: []
+      TASK TAGS: [always, artifactory-cleanup, cluster-state, cluster-status, copy-kubeconfig-all, download-robin-bin, ha-install, host-script-install, host-uninstall, k8s-script-install-all-worker, k8s-script-install-primary, k8s-uninstall, k8splus-script-install-primary, k8splus-uninstall, non-ha-install, precheck, reboot_check, robin-app-cleanup, robin-cnp-uninstall, robin-script-install-primary, uninstall, upgrade, upgrade-precheck, v5.3, v5.4]
+
+2. ansible-playbook playbook.yml -u root --ask-pass --tags host-script-install  --extra-vars "@variables.yaml"
+
+
+
+## skip single tag for e.g you want to skip host-install , you can run as below
+ansible-playbook playbook.yml -u root --ask-pass --tags k8s-script-install-all-worker,k8s-script-install-primary,k8splus-script-install-primary --extra-vars "@variables.yaml"
+
 ## Adhoc command
 ansible all -m ansible.builtin.yum -a "name=bind-utils state=present" -u root  --ask-pass   
    
@@ -38,3 +53,4 @@ pip install paramiko
 ## Use ansible cmds as belwow from macos:
 ansible-playbook playbook.yml -c paramiko --ask-pass --tags non-ha-install --extra-vars "@variables.yaml"
 ansible all -m ansible.builtin.yum -a "name=bind-utils state=present" -u root  --ask-pass -c paramiko
+ansible all -m shell -a uptime  -u root --ask-pass

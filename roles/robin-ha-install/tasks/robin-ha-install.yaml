@@ -4,7 +4,7 @@
     ./host-script-{{ os_version }}-{{ robin_version }}.sh install --robin-image-archive=robinbinimg-{{ robin_version }}.tar.gz --k8s-image-archive=k8s-images-{{ robin_version }}.tar.gz --host-type=physical --ignore-warnings
   async: 3600
   poll: 60
-  tags: [v5.4]
+  tags: [v5.4, ha-install-host-script]
 
 
 - name: Run k8s script on primary master node
@@ -14,7 +14,7 @@
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master']
-  tags: [v5.4]
+  tags: [v5.4, ha-install-k8s-primary-script]
 
 
 - name: fetch kube config file locally
@@ -23,6 +23,7 @@
     dest: "{{ playbook_dir }}/roles/robin-non-ha-install/files/config"
     flat: yes
   when: inventory_hostname  in groups['primary-master']
+  tags: [ha-fetch-kube-config]
 
 
 - name: Copy kube config to remote nodes
@@ -31,7 +32,7 @@
     dest: /var/tmp/config
   delegate_to: "{{ item }}"
   with_items: "{{ groups['worker'] + groups['secondary-master'] }}"
-  tags: [v5.4]
+  tags: [v5.4, ha-copy-kube-config]
 
 
 - name: Run k8s script on other master nodes
@@ -41,7 +42,7 @@
   async: 3600
   poll: 60
   when: inventory_hostname in groups['secondary-master']
-  tags: [v5.4]
+  tags: [v5.4, ha-install-k8s-script-sec-masters]
   
 
 - name: Run k8s script on all worker nodes
@@ -51,7 +52,7 @@
   async: 3600
   poll: 60
   when: inventory_hostname in groups['worker']
-  tags: [v5.4]
+  tags: [v5.4, ha-install-k8s-script-worker]
 
 
 - name: Run k8splus script on primary master node
@@ -61,7 +62,7 @@
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master']
-  tags: [v5.4]
+  tags: [v5.4,ha-install-k8splus-primary-master]
 
 
 - name: Run robin script on primary master node
@@ -74,7 +75,7 @@
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master']
-  tags: [v5.4]
+  tags: [v5.4, ha-install-robin-script-master]
 
 
 - name: Assign default rpool to each hosts and add roles
@@ -85,3 +86,4 @@
     robin host add-role {{ inventory_hostname }} compute,storage --wait
   args:
     executable: /bin/bash
+  tags: [ha-assign-default-rpool]  
