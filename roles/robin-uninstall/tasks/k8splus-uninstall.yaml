@@ -1,23 +1,43 @@
 - name: Uninstall k8splus configuration from all worker nodes
   shell: cd /root/build/{{ robin_version }} && ./k8splus-script-{{ robin_version }}.sh  cleanup -y
+  register: k8splus_uninstall_worker_output
   async: 3600
   poll: 60
   when: inventory_hostname  in groups['worker']
   tags:
     - v5.4
 
+- name: Display k8splus uninstall worker output
+  debug:
+    var: k8splus_uninstall_worker_output.stdout
+  when: inventory_hostname in groups['worker']
+
+
 - name: Uninstall k8splus configuration from secondary master nodes
   shell: cd /root/build/{{ robin_version }} && ./k8splus-script-{{ robin_version }}.sh  cleanup -y
+  register: k8splus_uninstall_sec_master_output
   async: 3600
   poll: 60
   when: inventory_hostname  in groups['secondary-master']
   tags:
     - v5.4
 
+- name: Display k8splus uninstall secondary master output
+  debug:
+    var: k8splus_uninstall_sec_master_output.stdout
+  when: inventory_hostname in groups['secondary-master']
+
+
 - name: Uninstall k8splus configuration from primary master nodes
   shell: cd /root/build/{{ robin_version }} && ./k8splus-script-{{ robin_version }}.sh  cleanup -y
+  register: k8splus_uninstall_master_output
   async: 3600
   poll: 60
   when: inventory_hostname  in groups['primary-master']
   tags:
     - v5.4
+
+- name: Display k8splus uninstall primary master output
+  debug:
+    var: k8splus_uninstall_master_output.stdout
+  when: inventory_hostname in groups['primary-master']

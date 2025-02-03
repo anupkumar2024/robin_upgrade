@@ -12,7 +12,7 @@
 
 ## To install robin of any version
 1. Update variables.yaml file in main dir
-2. run ansible cmd:
+2. Run ansible cmd:
    ansible-playbook playbook.yml  --ask-pass --tags non-ha-install --extra-vars "@variables.yaml"
    ansible-playbook playbook.yml  --ask-pass --tags ha-install --extra-vars "@variables.yaml"
 
@@ -23,11 +23,18 @@
   ansible-playbook playbook.yml  --ask-pass --tags cluster-status --extra-vars "@variables.yaml" 
 
 ## To upgrade
-1. update variables.yaml file with correct robin version
-2. run ansible cmd
+1. Update variables.yaml file with correct robin version
+2. Run ansible cmd:
    ansible-playbook playbook.yml  --ask-pass --tags upgrade --extra-vars "@variables.yaml"
 
-## To install with tags for single task
+## To uninstall
+1. Update variables.yaml file with coreect robin version to uninstall
+2. Run ansible cmd in 2 steps:
+   ansible-playbook robin-uninstall-playbook.yaml  --ask-pass --tags uninstall-robin-component --extra-vars "@variables.yaml" 
+   ansible-playbook playbook.yml  --ask-pass --tags uninstall --extra-vars "@variables.yaml" 
+
+
+## To run single task
 ansible-playbook playbook.yml --list-tags
 
 1. playbook: playbook.yml
@@ -39,7 +46,7 @@ ansible-playbook playbook.yml --list-tags
 
 
 
-## skip single tag for e.g you want to skip host-install , you can run as below
+## Skip single tag for e.g you want to skip host-install ,you can run as below
 ansible-playbook playbook.yml -u root --ask-pass --skip-tags k8s-script-install-all-worker,k8s-script-install-primary,k8splus-script-install-primary --extra-vars "@variables.yaml"
 
 ## Adhoc command

@@ -1,0 +1,13 @@
+---
+- name: Apply roles to hosts
+  hosts: all
+  become_user: root
+  remote_user: root
+  gather_facts: no
+  no_log: false
+  serial: 1
+  roles:
+    - role: robin-uninstall-component
+      tags:
+        - uninstall-robin-component
+      any_errors_fatal: true

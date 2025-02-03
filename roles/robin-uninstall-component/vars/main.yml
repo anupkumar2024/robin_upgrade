@@ -1,0 +1,4 @@
+---
+# vars file for robin-uninstall-component
+robin_user: admin
+robin_pass: Robin123

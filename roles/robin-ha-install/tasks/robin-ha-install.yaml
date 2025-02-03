@@ -2,19 +2,32 @@
   shell: |
     cd {{artifactory_folder}}{{ robin_version }} 
     ./host-script-{{ os_version }}-{{ robin_version }}.sh install --robin-image-archive=robinbinimg-{{ robin_version }}.tar.gz --k8s-image-archive=k8s-images-{{ robin_version }}.tar.gz --host-type=physical --ignore-warnings
+  register: host_script_output
   async: 3600
   poll: 60
   tags: [v5.4, ha-install-host-script]
+
+- name: Display output of host install script
+  debug:
+    var: host_script_output.stdout
+
 
 
 - name: Run k8s script on primary master node
   shell: |
     cd {{artifactory_folder}}{{ robin_version }} 
     ./k8s-script-{{ os_version }}-{{ robin_version }}.sh master --vip={{ vip }} --vrid={{ vrid }} --host-type=physical --ignore-warnings
+  register: k8s_script_master_output
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master']
   tags: [v5.4, ha-install-k8s-primary-script]
+
+
+- name: Display output of k8s script
+  debug:
+    var: k8s_script_master_output.stdout
+  when: inventory_hostname in groups['primary-master']
 
 
 - name: fetch kube config file locally
@@ -39,31 +52,47 @@
   shell: |
     cd {{artifactory_folder}}{{ robin_version }} 
     ./k8s-script-{{ os_version }}-{{ robin_version }}.sh master --kubeconfig=/var/tmp/config --host-type=physical --ignore-warnings
+  register: k8s_script_sec_master_output
   async: 3600
   poll: 60
   when: inventory_hostname in groups['secondary-master']
   tags: [v5.4, ha-install-k8s-script-sec-masters]
-  
+
+- name: Display output of k8s script on sec master
+  debug:
+    var: k8s_script_sec_master_output.stdout
+  when: inventory_hostname in groups['secondary-master']
+
 
 - name: Run k8s script on all worker nodes
   shell: |
     cd {{artifactory_folder}}{{ robin_version }}
     ./k8s-script-{{ os_version }}-{{ robin_version }}.sh worker --kubeconfig=/var/tmp/config --host-type=physical --ignore-warnings
+  register: k8s_script_worker_output
   async: 3600
   poll: 60
   when: inventory_hostname in groups['worker']
   tags: [v5.4, ha-install-k8s-script-worker]
 
+- name: Display output of k8s script on worker
+  debug:
+    var: k8s_script_worker_output.stdout
+  when: inventory_hostname in groups['worker']
 
 - name: Run k8splus script on primary master node
   shell: |
     cd {{artifactory_folder}}{{ robin_version }}
     ./k8splus-script-{{ robin_version }}.sh setup --kubeconfig=/root/.kube/config --host-type=physical --ignore-warnings
+  register: k8splus_script_output
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master']
   tags: [v5.4,ha-install-k8splus-primary-master]
 
+- name: Display output of k8splus script
+  debug:
+    var: k8splus_script_output.stdout
+  when: inventory_hostname in groups['primary-master']
 
 - name: Run robin script on primary master node
   shell: |
@@ -72,11 +101,16 @@
     ./robin-script-{{ robin_version }}.sh setup --username={{ robin_user }} --password={{ robin_pass }} --kubeconfig=/root/.kube/config --update-coredns --yes
   args:
     executable: /bin/bash
+  register: robin_script_output   
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master']
   tags: [v5.4, ha-install-robin-script-master]
 
+- name: Display output of robin script
+  debug:
+    var: robin_script_output.stdout
+  when: inventory_hostname in groups['primary-master'] 
 
 - name: Assign default rpool to each hosts and add roles
   shell: |
@@ -85,5 +119,5 @@
     robin host assign-rpool {{ inventory_hostname }} default --wait
     robin host add-role {{ inventory_hostname }} compute,storage --wait
   args:
-    executable: /bin/bash
+    executable: /bin/bash 
   tags: [ha-assign-default-rpool]  

@@ -2,28 +2,47 @@
   shell: source /root/.bashrc  && cd /root/build/{{ robin_version }} && ./robin-script-{{ robin_version }}.sh  cleanup -y
   args:
     executable: /bin/bash
+  register: robin_uninstall_worker_output
   async: 3600
   poll: 60
   when: inventory_hostname in groups['worker']
   tags:
     - v5.4
 
+- name: Display robin uninstall worker output
+  debug:
+    var: robin_uninstall_worker_output.stdout
+  when: inventory_hostname in groups['worker']
+
+
 - name: Uninstall Robin CNP from secondary master nodes
   shell: source /root/.bashrc  && cd /root/build/{{ robin_version }} && ./robin-script-{{ robin_version }}.sh  cleanup -y
   args:
     executable: /bin/bash
+  register: robin_uninstall_sec_master_output
   async: 3600
   poll: 60
   when: inventory_hostname in groups['secondary-master']
   tags:
     - v5.4
 
+- name: Display robin uninstall secondary master output
+  debug:
+    var: robin_uninstall_sec_master_output.stdout
+  when: inventory_hostname in groups['secondary-master']
+
 - name: Uninstall Robin CNP from primary master node
   shell: source /root/.bashrc && cd /root/build/{{ robin_version }} && ./robin-script-{{ robin_version }}.sh  cleanup -y
   args:
     executable: /bin/bash
+  register: robin_uninstall_master_output
   async: 3600
   poll: 60
   when: inventory_hostname  in groups['primary-master']
   tags:
     - v5.4
+
+- name: Display robin uninstall primary master output
+  debug:
+    var: robin_uninstall_master_output.stdout
+  when: inventory_hostname in groups['primary-master']    

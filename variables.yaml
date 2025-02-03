@@ -13,7 +13,7 @@ robin_pass: Robin123
 task: pre_upgrade # can be values pre_upgrade,post_upgrade for running ansible role cluster-state
 
 # For HA install
-vip: 10.9.111.111
+vip: 10.9.111.110
 vrid: 245
 
 # license activation

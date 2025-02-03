@@ -1,20 +1,5 @@
 ---
-# tasks file for robin-uninstall
-
-- name: Import app clean up
-  import_tasks: robin-app-cleanup.yaml
-  when: inventory_hostname  in groups['primary-master']
-  ignore_errors: yes
-  tags:
-    - v5.4
-    - robin-app-cleanup
-
-- name:  Import cnp uninstall
-  import_tasks: robin-cnp-uninstall.yaml
-  # ignore_errors: yes
-  tags:
-    - v5.4
-    - robin-cnp-uninstall
+# tasks file for k8s-uninstall
 
 - name: Import k8splus uninstall
   import_tasks: k8splus-uninstall.yaml
