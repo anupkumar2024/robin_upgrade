@@ -10,7 +10,8 @@
   shell: cd {{artifactory_folder}}{{ robin_version }} && ./k8s-script-{{ os_version }}-{{ robin_version }}.sh server --host-type=physical --ignore-warnings
   async: 3600
   poll: 60
-  when: inventory_hostname in groups['primary-master'] and host_script_result.failed == false
+  #when: inventory_hostname in groups['primary-master'] and host_script_result.failed == false
+  when: inventory_hostname in groups['primary-master']
   tags: [v5.4, non-ha-k8s-script-install-primary]
 
 
@@ -64,6 +65,18 @@
   when: inventory_hostname in groups['primary-master']
   tags: [v5.4, non-ha-robin-script-install-primary]
 
+# for 5.5.0
+- name: Run robin script on primary master node
+  shell: |
+    source /root/.bash_profile
+    cd {{artifactory_folder}}{{ robin_version }}
+    ./robin-script-{{ robin_version }}.sh setup --username={{ robin_user }} --password={{ robin_pass }} --kubeconfig=/root/.kube/config
+  args:
+    executable: /bin/bash
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['primary-master']
+  tags: [v5.5.0, non-ha-robin-script-install-primary-5.5.0]
 
 - name: Assign default rpool to each hosts and add roles
   shell: |
