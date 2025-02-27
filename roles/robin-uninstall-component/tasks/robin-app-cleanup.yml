@@ -1,5 +1,5 @@
 - name: get app json file
-  shell: source /root/.bash_profile && rm -rf app.json && robin login {{ robin_user }} --password {{ robin_pass }} && robin app list --json > app.json
+  shell: source /root/.bash_profile && rm -rf app.json && robin login {{ robin_user }} --password {{ robin_pass }} && robin app list --json > /root/app.json
   args:
     executable: /bin/bash
   async: 60  # Maximum time in seconds the task is allowed to run
@@ -16,7 +16,7 @@
     app_data: "{{ lookup('file', 'app.json') | from_json }}"
 
 - name: Delete all robin app
-  shell: source /root/.bash_profile && robin login {{ robin_user }} --password {{ robin_pass }} && robin app delete {{ item.name }} --iter -y --wait
+  shell: source /root/.bash_profile && robin login {{ robin_user }} --password {{ robin_pass }} && robin app delete {{ item.name }} --iter -y --force --wait
   args:
     executable: /bin/bash
   async: 60  # Maximum time in seconds the task is allowed to run

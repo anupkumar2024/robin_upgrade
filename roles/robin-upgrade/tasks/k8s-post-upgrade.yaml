@@ -6,7 +6,7 @@
   when: inventory_hostname in groups['primary-master']
   tags: [v5.4]
 
-- name: K8s Post Upgrade on all nodes
+- name: K8s Post Upgrade on all nodes except primary master
   shell: cd /root/build/{{ robin_version }} && ./k8s-script-{{ os_version }}-{{ robin_version }}.sh post-upgrade --host-type=physical --yes --force --silent
   #shell: cd /root/build/{{ robin_version }} && ./k8s-script-el7-{{ robin_version }}.sh post-upgrade --host-type=physical --yes --force --silent --ip-protocol=ipv6
   async: 3600

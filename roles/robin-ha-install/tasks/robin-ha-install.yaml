@@ -104,8 +104,21 @@
   register: robin_script_output   
   async: 3600
   poll: 60
-  when: inventory_hostname in groups['primary-master']
+  when: inventory_hostname in groups['primary-master'] and release != '5.5.0'
   tags: [v5.4, ha-install-robin-script-master]
+
+# for 5.5.0
+- name: Run robin script on primary master node
+  shell: |
+    source /root/.bash_profile
+    cd {{artifactory_folder}}{{ robin_version }}
+    ./robin-script-{{ robin_version }}.sh setup --username={{ robin_user }} --password={{ robin_pass }} --kubeconfig=/root/.kube/config
+  args:
+    executable: /bin/bash
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['primary-master'] and release == '5.5.0'
+  tags: [v5.5.0, ha-robin-script-install-primary-5.5.0] 
 
 - name: Display output of robin script
   debug:

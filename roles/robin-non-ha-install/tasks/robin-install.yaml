@@ -62,7 +62,7 @@
     executable: /bin/bash
   async: 3600
   poll: 60
-  when: inventory_hostname in groups['primary-master']
+  when: inventory_hostname in groups['primary-master'] and release != '5.5.0'
   tags: [v5.4, non-ha-robin-script-install-primary]
 
 # for 5.5.0
@@ -75,7 +75,7 @@
     executable: /bin/bash
   async: 3600
   poll: 60
-  when: inventory_hostname in groups['primary-master']
+  when: inventory_hostname in groups['primary-master'] and release == '5.5.0'
   tags: [v5.5.0, non-ha-robin-script-install-primary-5.5.0]
 
 - name: Assign default rpool to each hosts and add roles

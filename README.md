@@ -6,7 +6,7 @@
 ## To download robin binaries
 1. Update variables.yaml file in main dir
 2. Run ansible cmd:
-   ansible-playbook playbook.yml  --ask-pass --tags download --extra-vars "@variables.yaml"
+   ansible-playbook playbook.yml  --ask-pass --tags download-robin-bin --extra-vars "@variables.yaml"
 3. If passwordless authentication is enabled
    ansible-playbook playbook.yml --tags download --extra-vars "@variables.yaml"  
 
@@ -28,7 +28,7 @@
    ansible-playbook playbook.yml  --ask-pass --tags upgrade --extra-vars "@variables.yaml"
 
 ## To uninstall
-1. Update variables.yaml file with coreect robin version to uninstall
+1. Update variables.yaml file with correct robin version to uninstall
 2. Run ansible cmd in 2 steps:
    ansible-playbook robin-uninstall-playbook.yaml  --ask-pass --tags uninstall-robin-component --extra-vars "@variables.yaml" 
    ansible-playbook playbook.yml  --ask-pass --tags uninstall --extra-vars "@variables.yaml" 

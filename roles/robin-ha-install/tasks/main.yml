@@ -1,6 +1,19 @@
 ---
 # tasks file for robin-ha-install
 
+- name: Include bashrc update task from robin-non-ha-install role
+  include_role:
+    name: robin-non-ha-install
+    tasks_from: update-bashrc
+  tags:
+    - always
+
+
+- name: Import prerequisite file
+  import_tasks: prerequisite.yaml
+  tags:
+    - always
+
 - name: Import install script
   import_tasks: robin-ha-install.yaml
   tags:
