@@ -14,7 +14,7 @@
   shell: |
     source /root/.bash_profile
     robin login {{ robin_user}} --password {{ robin_pass }} >/dev/null 
-    robin manager list | awk 'NR>3 {print $8}'
+    robin manager list | grep -v standby | awk 'NR>3 {print $8}'
   args:
     executable: /bin/bash
   register: primary_master 

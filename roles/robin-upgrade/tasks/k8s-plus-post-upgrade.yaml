@@ -1,6 +1,31 @@
 - name: K8sPlus Post Upgrade
-  shell: cd /root/build/{{ robin_version }} && ./k8splus-script-{{ robin_version }}.sh post-upgrade --host-type=physical --silent --ip-protocol=ipv6
+  shell: cd /root/build/{{ robin_version }} && ./k8splus-script-{{ robin_version }}.sh post-upgrade --host-type=physical --silent --ip-protocol={{ ip_protocol }}
   async: 3600
   poll: 60
-  when: inventory_hostname in groups['primary-master'][0]
-  tags: [v5.4]
+  when: inventory_hostname in groups['primary-master'][0] and upgrade_release_major_version == '5.4.3'
+  
+
+- name: K8sPlus Post Upgrade
+  shell: cd /root/build/{{ robin_version }} && ./k8splus-script-{{ robin_version }}.sh post-upgrade --host-type=physical --silent 
+  async: 3600
+  poll: 60
+  when: inventory_hostname in groups['primary-master'][0] and upgrade_release_major_version == '5.5.0'
+  
+
+- name: Include common tasks to find the active node
+  include_tasks: find-active-node.yaml
+  name: "k8s plus post upgrade - active"
+
+
+- name: K8sPlus Post Upgrade on Active Master
+  shell: cd /root/build/{{ robin_version }} && ./k8splus-script-{{ robin_version }}.sh post-upgrade --host-type=physical --silent --ip-protocol={{ ip_protocol }}
+  async: 3600
+  poll: 60
+  when: ansible_facts['fqdn'] == active_node.results[0].stdout and upgrade_release_major_version == '5.4.3'
+
+
+- name: K8sPlus Post Upgrade on Active Master
+  shell: cd /root/build/{{ robin_version }} && ./k8splus-script-{{ robin_version }}.sh post-upgrade --host-type=physical --silent 
+  async: 3600
+  poll: 60
+  when: ansible_facts['fqdn'] == active_node.results[0].stdout and upgrade_release_major_version == '5.5.0'

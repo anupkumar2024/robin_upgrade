@@ -1,0 +1,57 @@
+# find-active-node.yaml
+
+- name: Perform pre-checks
+  block:
+    - name: Gather Minimal Facts
+      setup:
+        gather_subset: ['min']
+
+    - name: pre-check for robin command
+      shell: robin login {{ robin_user }} --password '{{ robin_pass }}'
+      register: robin_login
+
+    - name: Robin exit code is 0
+      assert:
+        that:
+          - robin_login.rc == 0
+        fail_msg: "Pre-check failed. 'robin login' command returned a non-zero exit code."
+        success_msg: "Robin login Successful"
+
+    - name: pre-check for kubectl command
+      shell: kubectl get nodes
+      register: kubectl_result
+
+    - name: Kubectl exit code is 0
+      assert:
+        that:
+          - kubectl_result.rc == 0
+        fail_msg: "Pre-check failed. 'Kubectl get nodes' command returned a non-zero exit code."
+        success_msg: "Kubectl get nodes are working well"
+
+  when: inventory_hostname in groups['primary-master'] + groups['secondary-master']
+  rescue:
+    - name: block has failed
+      debug:
+        msg: "One or more pre-checks failed. Please investigate further."
+      when: inventory_hostname in groups['primary-master'] + groups['secondary-master']
+
+
+- name: Gather the full FQDN of the node
+  ansible.builtin.setup:
+    filter: ansible_fqdn
+
+- name: Debug ansible_facts
+  debug:
+    var: ansible_facts['fqdn']
+  
+
+- name: Find the active node before K8s upgrade on master
+  ansible.builtin.shell: "kubectl get pods -n robinio -o wide | grep -i master | awk '{print $7}'"
+  register: active_node
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['primary-master'] }}"
+  
+
+- name: Debug active node
+  debug:
+    var: active_node.results[0].stdout

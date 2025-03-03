@@ -5,4 +5,4 @@
       - bind-utils
       - net-tools
     state: present
-  tags: Always
+  tags: always  

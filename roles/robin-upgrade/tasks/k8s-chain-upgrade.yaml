@@ -3,7 +3,7 @@
   tags: [v5.4]
   block:
     - name: Task for master 1
-      shell: cd /root/build/{{ robin_version }} && ./k8s-script-el7-{{ robin_version }}.sh upgrade-k8s --primary-cp-node --k8s-upgrade-version={{ k8s_version }} --host-type=physical --yes --force --silent --ip-protocol=ipv6
+      shell: cd /root/build/{{ robin_version }} && ./k8s-script-el7-{{ robin_version }}.sh upgrade-k8s --primary-cp-node --k8s-upgrade-version={{ k8s_version }} --host-type=physical --yes --force --silent --ip-protocol={{ ip_protocol }}
       async: 3600
       poll: 60
       when: inventory_hostname in groups['primary-master'][0]
@@ -12,7 +12,7 @@
   tags: [v5.4]
   block:
     - name: Task for master 2
-      shell: cd /root/build/{{ robin_version }} && ./k8s-script-el7-{{ robin_version }}.sh upgrade-k8s --kubeconfig=/tmp/kube.config --k8s-upgrade-version={{ k8s_version }} --host-type=physical --yes --force --silent --ip-protocol=ipv6
+      shell: cd /root/build/{{ robin_version }} && ./k8s-script-el7-{{ robin_version }}.sh upgrade-k8s --kubeconfig=/tmp/kube.config --k8s-upgrade-version={{ k8s_version }} --host-type=physical --yes --force --silent --ip-protocol={{ ip_protocol }}
       async: 3600
       poll: 60
       when: inventory_hostname in groups['secondary-master'][0]
@@ -21,7 +21,7 @@
   tags: [v5.4]
   block:
     - name: Task for master 3
-      shell: cd /root/build/{{ robin_version }} && ./k8s-script-el7-{{ robin_version }}.sh upgrade-k8s --kubeconfig=/tmp/kube.config --k8s-upgrade-version={{ k8s_version }} --host-type=physical --yes --force --silent --ip-protocol=ipv6
+      shell: cd /root/build/{{ robin_version }} && ./k8s-script-el7-{{ robin_version }}.sh upgrade-k8s --kubeconfig=/tmp/kube.config --k8s-upgrade-version={{ k8s_version }} --host-type=physical --yes --force --silent --ip-protocol={{ ip_protocol }}
       async: 3600
       poll: 60
       when: inventory_hostname in groups['secondary-master'][1]
@@ -30,7 +30,7 @@
   tags: [v5.4]
   block:
     - name: Task for worker nodes
-      shell: cd /root/build/{{ robin_version }} && ./k8s-script-el7-{{ robin_version }}.sh upgrade-k8s --kubeconfig=/tmp/kube.config --k8s-upgrade-version={{ k8s_version }} --host-type=physical --yes --force --silent --ip-protocol=ipv6
+      shell: cd /root/build/{{ robin_version }} && ./k8s-script-el7-{{ robin_version }}.sh upgrade-k8s --kubeconfig=/tmp/kube.config --k8s-upgrade-version={{ k8s_version }} --host-type=physical --yes --force --silent --ip-protocol={{ ip_protocol }}
       async: 3600
       poll: 60
       when: inventory_hostname not in groups['primary-master'] and inventory_hostname not in groups['secondary-master']

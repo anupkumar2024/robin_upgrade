@@ -1,9 +1,9 @@
 - name: capture zombie processes
-  shell: ps aux | awk '{ if ($8 ~ /Z/) print $0 }'
+  shell: ps axl | awk '{ if ($10 ~ /Z/) print $0 }'
   register: zombie_processes
 
 - name: capture defunct processes
-  shell: ps aux | awk '{ if ($8 ~ /D/) print $0 }'
+  shell: ps axl | awk '{ if ($10 ~ /D/) print $0 }'
   register: defunct_processes
 
 - name: Set facts for zombie and defunct processes

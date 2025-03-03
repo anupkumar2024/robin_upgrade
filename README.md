@@ -51,7 +51,10 @@ ansible-playbook playbook.yml -u root --ask-pass --skip-tags k8s-script-install-
 
 ## Adhoc command
 ansible all -m ansible.builtin.yum -a "name=bind-utils state=present" -u root  --ask-pass   
-   
+
+## Run as su user
+ansible-playbook playbook.yml  --ask-pass --ask-become-pass -u anupkumar   --tags download-robin-bin  --extra-vars "@variables.yaml"
+
 # For macos:
 ## Install python3  and run below cmds
 pip install ansible
