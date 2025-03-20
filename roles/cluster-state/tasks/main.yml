@@ -3,6 +3,5 @@
 - name: import cluster status tasks
   import_tasks: cluster-status-task.yaml
   tags:
-    - cluster-state
-    - v5.4
-  when: inventory_hostname in groups['primary-master']
+    - capture-cluster-state
+   

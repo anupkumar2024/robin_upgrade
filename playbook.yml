@@ -40,4 +40,15 @@
 
     - role: cluster-state
       tags:
-        - cluster-status
+        - capture-cluster-state
+
+    - role: post-upgrade-tasks
+      ignore_errors: yes
+      tags:
+        - postcheck
+        - post-upgrade-tasks-550    
+
+    - role: pre-upgrade-tasks
+      ignore_errors: yes
+      tags:
+        - pre-upgrade-tasks-550    

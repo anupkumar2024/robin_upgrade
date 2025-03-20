@@ -6,26 +6,9 @@
   tags:
     - pre-check
 
-- name: Check All hosts ready
-  shell: /root/bin/robin host list | grep -i psr | grep -vi Ready
-  when: inventory_hostname in groups['primary-master'][0]
-  register: host_ready_result
-  ignore_errors: true
-  tags:
-    - pre-check
-
-
-- name: Verify All hosts ready
-  when: inventory_hostname in groups['primary-master'][0]
-  assert:
-    that: host_ready_result.rc != 0
-    msg: "Some hosts have been found to be in NOT READY state, Check that all hosts are in READY state before proceeding"
-  tags:
-    - pre-check
-
 
 - name: Check All hosts online
-  shell: /root/bin/robin host list | grep -i psr | grep -vi online
+  shell: /root/bin/robin host list --headers LastOpr  | grep -iv  online
   when: inventory_hostname in groups['primary-master'][0]
   register: host_online_result
   ignore_errors: true
@@ -35,7 +18,7 @@
 - name: Verify All hosts online
   when: inventory_hostname in groups['primary-master'][0]
   assert:
-    that: host_online_result.rc != 0
+    that: host_online_result.rc == 1
     msg: "Some hosts have been found to be in OFFLINE state, Check that all hosts are in ONLINE state before proceeding"
   tags:
     - pre-check

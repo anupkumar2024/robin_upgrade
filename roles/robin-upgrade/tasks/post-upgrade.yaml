@@ -1,6 +1,6 @@
-- name: Include host post upgrade
-  import_tasks: host-post-upgrade.yaml
-  tags: [v5.4]
+# - name: Include host post upgrade
+#   import_tasks: host-post-upgrade.yaml
+#   tags: [v5.4]
 
 #- name: capture cluster state before k8s post upgrade
 #  import_role:

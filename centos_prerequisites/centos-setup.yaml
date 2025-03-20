@@ -1,0 +1,48 @@
+# required for centos before instaaling cnp
+---
+- name: test
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: copy file
+      copy: 
+        src: repo_centos.sh
+        dest: /root/repo_centos.sh
+
+    - name: copy rpm for centos
+      copy: 
+        src: slirp4netns-0.4.3-4.el7_8.x86_64.rpm
+        dest: /root/
+
+    - name: run repo.sh 
+      shell:  chmod +x /root/repo_centos.sh  && /root/repo_centos.sh 
+      args:
+        executable: /bin/bash
+      register: repo_output   
+
+    - name: debug
+      debug:
+        msg: "{{ repo_output }}"
+
+    - name: Add entries to /etc/hosts file
+      ansible.builtin.copy:
+        src: hosts-file
+        dest: /etc/hosts 
+      tags: hosts  
+
+    - name: Add entries to resolve.conf file
+      ansible.builtin.copy:
+        src: centos_resolv.conf
+        dest: /etc/resolv.conf 
+      tags: dns 
+
+    - name: Load modules
+      shell:  modprobe tcm_loop && modprobe target_core_user && lsmod | grep tcm_loop && lsmod | grep target_core_user
+      args:
+        executable: /bin/bash
+      register: mod_output
+    
+    - name: debug
+      debug:
+        msg: "{{ mod_output }}"
+                    

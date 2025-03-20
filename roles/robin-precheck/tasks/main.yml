@@ -53,4 +53,42 @@
 - name: Import extra checks
   import_tasks: extra-checks.yaml
   tags: pre-check
-  
+
+- name: Import kubelet checks
+  import_tasks: verify-kubelet-version.yaml
+  tags: pre-check
+  when: current_robin_version == '5.4.3-564'
+
+- name: Import robin db checks
+  import_tasks: robin-db-ldap-check.yaml
+  tags: pre-check
+  when: inventory_hostname in groups['primary-master'] and current_robin_version == '5.4.3-564'
+
+- name: Import robin config check
+  import_tasks: robin-config-suicide-check.yaml
+  tags: pre-check
+  when: inventory_hostname in groups['primary-master'] and current_robin_version == '5.4.3-564'
+
+- name: Import robin nfs monitor schedule check
+  import_tasks: robin-nfs-schedule-check.yaml
+  tags: pre-check
+  when: inventory_hostname in groups['primary-master'] and current_robin_version == '5.4.3-564'
+
+- name: Import kubelet.conf check for IP
+  import_tasks: kubelet-ip-check.yaml
+  tags: pre-check
+  when: inventory_hostname in groups['master'] and current_robin_version == '5.4.3-564'
+
+- name: Import hungmounts check 
+  import_tasks: hungmountscheck.yaml
+  tags: pre-check
+
+- name: Import auto rebalance check 
+  import_tasks: auto-disk-rebalance-check.yaml
+  tags: pre-check
+  when: inventory_hostname in groups['primary-master']
+
+- name: Import auto pilot check 
+  import_tasks: autopilot-check.yaml
+  tags: pre-check
+  when: inventory_hostname in groups['primary-master']

@@ -1,0 +1,8 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+10.9.111.70  vnode-111-70.robinsystems.com vnode-111-70
+10.9.111.71  vnode-111-71.robinsystems.com vnode-111-71
+10.9.111.72  vnode-111-72.robinsystems.com vnode-111-72
+10.9.111.74  vnode-111-74.robinsystems.com vnode-111-74
+10.9.111.75  vnode-111-75.robinsystems.com vnode-111-75

@@ -1,10 +1,11 @@
 - name: Run host script on all nodes
   shell: |
     cd {{artifactory_folder}}{{ robin_version }} 
-    ./host-script-{{ os_version }}-{{ robin_version }}.sh install --robin-image-archive=robinbinimg-{{ robin_version }}.tar.gz --k8s-image-archive=k8s-images-{{ robin_version }}.tar.gz --host-type=physical --ignore-warnings
+    ./host-script-{{ os_version }}-{{ robin_version }}.sh install --robin-image-archive=robinbinimg-{{ robin_version }}.tar.gz --k8s-image-archive=k8s-images-{{ robin_version }}.tar.gz --host-type=physical  --ignore-warnings
   register: host_script_output
   async: 3600
   poll: 60
+  when: inventory_hostname in groups['master'] + groups['worker']
   tags: [v5.4, ha-install-host-script]
 
 - name: Display output of host install script

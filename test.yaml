@@ -1,14 +1,14 @@
----
-- name: test
-  hosts: centos-60-241.robinsystems.com
+- name: Apply roles to hosts
+  hosts: [primary-master]
+  become: yes
+  become_user: root
+  remote_user: anupkumar
+  become_method: su
   gather_facts: no
-  tasks:
-    - name: get robin version
-      shell: source /root/.bash_profile && robin version
-      args:
-        executable: /bin/bash
-      register: robin_version  
-
-    - name: debug
-      debug:
-        msg: "{{ robin_version }}"
+  no_log: false
+  tasks
+    - name: Include common tasks to find the active node
+      include_tasks: roles/robin-upgrade/tasks/find-active-node.yaml
+      name: "k8s plus upgrade - active"
+      tags:
+        - v5.4hf5
