@@ -1,34 +1,36 @@
 ---
-# versions mentioned below will be used to install or upgrade
-# change the build version and correct version in artifactory url to upgrade or install 
+# change the build version and correct version in artifactory url to upgrade or install or download binaries
 
-# artifactory_url: http://builds.robinsystems.com:8080/view/5.4.x/job/Robin_5.4.3_Binary/564/artifact/artifacts/
+#artifactory_url: http://builds.robinsystems.com:8080/view/5.4.x/job/Robin_5.4.3_Binary/564/artifact/artifacts/
 artifactory_url: http://builds.robinsystems.com:8080/job/Robin_5.4.x_Binary/1796/artifact/artifacts/
 build: 1796
-current_robin_version: 5.4.3-564
-os_version: el8
-robin_version: 5.5.0-1796  # to upgrade version
-upgrade_release_major_version: 5.5.0
-current_release_major_version: 5.4.3  
+release: 5.5.0
+robin_version: 5.5.0-1796 # used for upgrade ,install and download robin binaries
+os_version: el7 
 artifactory_folder: /root/build/
 robin_user: admin
 robin_pass: Robin123
-task: pre_upgrade  # can be values pre_upgrade,post_upgrade for running ansible role cluster-state
 ip_protocol: ipv4
+ansible_user: anupkumar
 
+# For HA install
+vip: 10.9.111.108
+vrid: 246
+
+# For upgrade
+task: pre_upgrade  # can be values pre_upgrade,post_upgrade for running ansible role cluster-state  
+current_robin_version: 5.4.3-564
+upgrade_release_major_version: 5.5.0
+current_release_major_version: 5.4.3 
 v53_to_vhf3_chain_upgrade_k8s_versions:
   - 1.22.5
   - 1.23.8
   - 1.24.8
   - 1.25.7
-
 v543hf3_to_vhf5_chain_upgrade_k8s_versions: 
   - 1.25.7
   - 1.26.0
-
-
 v543hf5_to_v550_chain_upgrade_k8s_versions:
-  # - 1.25.7
   - 1.26.0
   - 1.27.9
   - 1.28.5
@@ -36,17 +38,5 @@ v543hf5_to_v550_chain_upgrade_k8s_versions:
   - 1.30.9
   - 1.31.6
 
-
-
-
-# For HA install
-vip: 10.9.111.108  # verify if ip is not in use before putting here
-vrid: 246
-
-
-# license activation
-## LICENSE DETAILS
-# LICENSE_PROXY_URL: 'http://centos-60-214:5000/'
-# LICENSE_RENEW_PERIOD: 4
 
 

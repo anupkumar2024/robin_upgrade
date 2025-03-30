@@ -3,35 +3,49 @@
 ## Update host details on inventory/hosts.ini file. 
 
 # Examples
+## To configure centos before cnp install
+1. Add proper /etc/hosts file and resolve.conf file in dir centos_prerequisites
+2. Run playbook centos-setup.yaml
+   ansible-playbook -i ../inventory/hosts.ini centos-setup.yaml  --ask-pass -u root --ssh-extra-args='-o StrictHostKeyChecking=no
+
+   
 ## To download robin binaries
 1. Update config.yaml file in main dir
 2. Run ansible cmd:
-   ansible-playbook playbook.yml  --ask-pass --tags download-robin-bin --extra-vars "@config.yaml"
+   for --ask-become-pass give su to root password
+   ansible-playbook playbook.yml  --ask-pass --ask-become-pass --tags download-robin-bin --extra-vars "@config.yaml"
 3. If passwordless authentication is enabled
-   ansible-playbook playbook.yml --tags download --extra-vars "@config.yaml"  
-
+   ansible-playbook playbook.yml --tags download --extra-vars "@config.yaml"     
+  
 ## To install robin of any version
 1. Update config.yaml file in main dir
 2. Run ansible cmd:
-   ansible-playbook playbook.yml  --ask-pass --tags non-ha-install --extra-vars "@config.yaml"
-   ansible-playbook playbook.yml  --ask-pass --tags ha-install --extra-vars "@config.yaml"
+   ansible-playbook playbook.yml  --ask-pass --ask-become-pass --tags non-ha-install --extra-vars "@config.yaml"
+   ansible-playbook playbook.yml  --ask-pass --ask-become-pass --tags ha-install --extra-vars "@config.yaml"
 
 ## To do prechecks before upgrade
-  ansible-playbook playbook.yml  --ask-pass --tags precheck --extra-vars "@config.yaml" 
+  ansible-playbook playbook.yml  --ask-pass --ask-become-pass --tags precheck --extra-vars "@config.yaml" 
 
 ## Capture cluster state before upgrade
-  ansible-playbook playbook.yml  --ask-pass --tags cluster-status --extra-vars "@config.yaml" 
+  ansible-playbook playbook.yml  --ask-pass --ask-become-pass --tags cluster-status --extra-vars "@config.yaml" 
+
+## Preupgrade tasks
+1. ansible-playbook playbook.yml  --tags pre-upgrade-tasks-550  --ask-pass --ask-become-pass -e "@config.yaml"
 
 ## To upgrade
 1. Update config.yaml file with correct robin version
 2. Run ansible cmd:
-   ansible-playbook playbook.yml  --ask-pass --tags upgrade --extra-vars "@config.yaml"
+   ansible-playbook playbook.yml  --ask-pass --ask-become-pass --tags upgrade --extra-vars "@config.yaml"
+
+## post upgrade tasks
+1. ansible-playbook playbook.yml  --tags postcheck  --ask-pass --ask-become-pass -e "@config.yaml" 
+2. ansible-playbook playbook.yml  --tags post-upgrade-tasks-550  --ask-pass --ask-become-pass -e "@config.yaml" 
 
 ## To uninstall
 1. Update config.yaml file with correct robin version to uninstall
 2. Run ansible cmd in 2 steps:
-   ansible-playbook robin-uninstall-playbook.yaml  --ask-pass --tags uninstall-robin-component --extra-vars "@config.yaml" 
-   ansible-playbook playbook.yml  --ask-pass --tags uninstall --extra-vars "@config.yaml" 
+   ansible-playbook robin-uninstall-playbook.yaml  --ask-pass --ask-become-pass --tags uninstall-robin-component --extra-vars "@config.yaml" 
+   ansible-playbook playbook.yml  --ask-pass --ask-become-pass --tags uninstall --extra-vars "@config.yaml" 
 
 
 ## To run single task
@@ -51,7 +65,7 @@ ansible-playbook playbook.yml -u root --ask-pass --skip-tags k8s-script-install-
 
 ## Adhoc command
 ansible all -m ansible.builtin.yum -a "name=bind-utils state=present" -u root  --ask-pass
-ansible all -m shell -a "echo 'anupkumar:robin123' | chpasswd" -u root --ask-pass
+ansible all -m shell -a "echo 'anupkumar:test123' | chpasswd" -u root --ask-pass
 
 
 ## Run as su user for all tags like  below cmd

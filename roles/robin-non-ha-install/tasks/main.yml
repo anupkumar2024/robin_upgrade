@@ -1,10 +1,12 @@
 ---
 # tasks file for robin-non-ha-install
-#- name: Import Artifacts Download
-#  import_tasks: artifacts-download.yaml
-#  tags:
-#    - image-download
-#    - image-load
+- name: Install python3 and nslookup on all nodes
+  yum:
+    name:
+      - python3
+      - bind-utils
+      - net-tools
+    state: present
 
 - name: Import bashrc file
   import_tasks: update-bashrc.yaml

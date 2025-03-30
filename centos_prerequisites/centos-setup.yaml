@@ -1,7 +1,11 @@
 # required for centos before instaaling cnp
 ---
-- name: test
+- name: setup-centos
   hosts: all
+  # become: yes
+  # become_user: root
+  # remote_user: root
+  # become_method: su
   gather_facts: no
   tasks:
     - name: copy file
@@ -45,4 +49,15 @@
     - name: debug
       debug:
         msg: "{{ mod_output }}"
-                    
+
+    - name: Configure sudo access for anupkumar
+      lineinfile:
+        path: "/etc/sudoers.d/anupkumar"
+        line: "anupkumar ALL=(ALL) NOPASSWD: ALL"
+        state: present
+        create: yes
+        mode: '0440'
+        owner: root
+        group: root
+        validate: 'visudo -cf %s'
+      tags: grant_sudo

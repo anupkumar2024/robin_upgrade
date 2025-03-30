@@ -1,8 +1,10 @@
 ---
 - name: Apply roles to hosts
   hosts: all
+  become: yes
   become_user: root
-  remote_user: root
+  remote_user: anupkumar
+  become_method: su
   gather_facts: no
   no_log: false
   serial: 1

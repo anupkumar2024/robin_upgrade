@@ -1,7 +1,2 @@
 ---
 # vars file for roles/cluster-state
-artifactory_folder: /root/build/
-release: 5.4.3
-robin_user: admin
-robin_pass: Robin123
-task: pre_upgrade # can be values pre_upgrade,post_upgrade

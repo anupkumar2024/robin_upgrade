@@ -9,6 +9,10 @@
   shell: kubelet --version | awk '{ print $2 }'
   register: kubelet_version
 
+- name: debug kubelet version
+  debug:
+    msg: "{{ kubelet_version.stdout }}"
+
 - name: Replace kubelet binary
   shell: |
     cd /tmp; curl http://artifactory.robinsystems.com/k8s_pkgs/kubelet-v1.25.7 -o kubelet
@@ -120,6 +124,14 @@
     source /root/.bash_profile && robin login {{ robin_user }} --password {{ robin_pass }} >/dev/null
     robin config update server disk_used_space_high_watermark 140
   args:
+    executable: /bin/bash
+  when: inventory_hostname in groups['primary-master']
+
+- name: fetch auto-rebalance status
+  shell: |
+    source /root/.bash_profile
+    robin config list server disk_used_space_high_watermark --headers Value
+  args:
     executable: /bin/bash  
   register: high_water_mark
   when: inventory_hostname in groups['primary-master']
@@ -138,7 +150,7 @@
 - name: Disable autopilot for apps
   shell: |
     source /root/.bashrc 
-    for app in $(robin app list --header name); do robin ap disable --app $app; done
+    for app in $(robin app list --header name); do robin ap disable --app $app -y --wait; done
   args:
     executable: /bin/bash  
   when: inventory_hostname in groups['primary-master']

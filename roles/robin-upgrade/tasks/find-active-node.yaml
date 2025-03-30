@@ -49,7 +49,7 @@
     var: ansible_facts['fqdn']
   
 
-- name: Find the active node before K8s upgrade on master
+- name: Find the active robin master node 
   ansible.builtin.shell: |
     source /root/.bashrc 
     robin manager list | grep -v standby | grep master | awk '{print $8}'
@@ -59,21 +59,21 @@
   when: upgrade_release_major_version == '5.5.0'
 
   
-- name: Find the active node before K8s upgrade on master for cnp 5.4.3
+- name: Find the active node before K8s plus upgrade on master for cnp 5.4.3
   ansible.builtin.shell: "kubectl get pods -n robinio -o wide | grep -i master | awk '{print $7}'"
   register: active_node_543
   when: upgrade_release_major_version != '5.5.0'
 
 - name: Set active_node variable based on version
   set_fact:
-    active_node: "{{ active_node_550 if upgrade_release_major_version == '5.5.0' else active_node_543 }}"
+    active_node: "{{ active_node_550.stdout if upgrade_release_major_version == '5.5.0' else active_node_543.stdout }}"
   delegate_to: "{{ item }}"
   loop: "{{ groups['primary-master'] }}"   
 
 
 - name: Debug active node
   debug:
-    var: active_node.stdout
+    var: active_node
    
    
 

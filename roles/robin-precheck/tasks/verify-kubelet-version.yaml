@@ -3,7 +3,7 @@
   register: kubelet_version
 
 
-- name: debug
+- name: debug kubelet version
   debug:
     msg: "{{ kubelet_version.stdout }}"
 

@@ -83,6 +83,7 @@
    - pre-check
 
 - debug: var=job_output
+  when: inventory_hostname in groups['primary-master'][0]
   tags: pre-check
 
 

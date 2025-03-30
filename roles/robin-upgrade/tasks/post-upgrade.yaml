@@ -1,16 +1,7 @@
-# - name: Include host post upgrade
-#   import_tasks: host-post-upgrade.yaml
-#   tags: [v5.4]
+- name: Include host post upgrade
+  import_tasks: host-post-upgrade.yaml
+  tags: [v5.4]
 
-#- name: capture cluster state before k8s post upgrade
-#  import_role:
-#    name: cluster-state
-#  vars:
-#    result_path: /root/build/{{ robin_version }}/k8s-post-upgrade
-#    cluster_state: "full"
-#  tags:
-#    - always
-#
 - name: Include k8s post upgrade
   import_tasks: k8s-post-upgrade.yaml
   tags: [v5.4]
@@ -22,22 +13,3 @@
 - name: Include robin post upgrade
   import_tasks: robin-post-upgrade.yaml
   tags: [v5.4]
-
-# - name: revert back robin_k8s_extension
-#   shell: |
-#     robin config update manager robin_k8s_extension True
-#   when: inventory_hostname in groups['primary-master'][0]
-#   tags: [v5.4]
-
-
-# - name: Get list of Robin-worker Pods
-#   shell: kubectl get pods -n robinio -l robin.io/vnodetype=robin-worker --no-headers -o custom-columns=":metadata.name"
-#   register: pod_list
-#   when: inventory_hostname not in groups['primary-master'] and inventory_hostname not in groups['secondary-master']
-#   tags: [v5.4]
-
-# - name: Restart robin-agent  on all worker Pods
-#   shell: kubectl exec -it -n robinio {{ item }} -- systemctl restart robin-agent
-#   loop: "{{ pod_list.stdout_lines }}"
-#   when: inventory_hostname not in groups['primary-master'] and inventory_hostname not in groups['secondary-master']
-#   tags: [v5.4]

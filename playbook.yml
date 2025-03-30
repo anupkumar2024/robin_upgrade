@@ -3,8 +3,8 @@
   hosts: all
   become: yes
   become_user: root
-  remote_user: anupkumar
-  become_method: su
+  remote_user: "{{ ansible_user }}"
+  become_method: sudo
   gather_facts: no
   no_log: false
   roles:
