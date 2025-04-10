@@ -2,11 +2,11 @@
 # change the build version and correct version in artifactory url to upgrade or install or download binaries
 
 #artifactory_url: http://builds.robinsystems.com:8080/view/5.4.x/job/Robin_5.4.3_Binary/564/artifact/artifacts/
-artifactory_url: http://builds.robinsystems.com:8080/job/Robin_5.4.x_Binary/1796/artifact/artifacts/
-build: 1796
+artifactory_url: http://builds.robinsystems.com:8080/job/Robin_5.4.x_Binary/1841/artifact/artifacts/
+build: 1841
 release: 5.5.0
-robin_version: 5.5.0-1796 # used for upgrade ,install and download robin binaries
-os_version: el7 
+robin_version: 5.5.0-1841 #used for upgrade ,install and download robin binaries
+os_version: el8 
 artifactory_folder: /root/build/
 robin_user: admin
 robin_pass: Robin123
@@ -14,8 +14,8 @@ ip_protocol: ipv4
 ansible_user: anupkumar
 
 # For HA install
-vip: 10.9.111.108
-vrid: 246
+vip: 10.9.111.111
+vrid: 241
 
 # For upgrade
 task: pre_upgrade  # can be values pre_upgrade,post_upgrade for running ansible role cluster-state  
