@@ -34,4 +34,3 @@
       async: 3600
       poll: 60
       when: inventory_hostname not in groups['primary-master'] and inventory_hostname not in groups['secondary-master']
-

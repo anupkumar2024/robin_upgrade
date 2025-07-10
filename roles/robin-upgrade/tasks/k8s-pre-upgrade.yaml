@@ -5,7 +5,7 @@
     flat: yes
   delegate_to: "{{ groups['primary-master'][0] }}"
   run_once: yes  # Run this task only once on primary-master[0]
-  tags: [v5.4hf3,v5.4hf5]
+
 
 - name: Copy the kubeconfig to all hosts
   copy:
@@ -13,20 +13,20 @@
     dest: /root/kube.config   # Destination path on other nodes
   delegate_to: "{{ item }}"
   with_items: "{{ groups['secondary-master'] + groups['worker'] + groups['primary-master'] }}"
-  tags: [v5.4hf3,v5.4hf5]
+
 
 - name: K8s Pre upgrade
   shell: cd /root/build/{{ robin_version }} && ./k8s-script-{{ os_version }}-{{ robin_version }}.sh pre-upgrade --kubeconfig=/root/kube.config --host-type=physical --yes --force --silent --ip-protocol={{ ip_protocol }}
   async: 3600
   poll: 60
-  tags: [v5.4hf3,v5.4hf5]
+
 
 - name: K8splus Pre upgrade
   shell: cd /root/build/{{ robin_version }} && ./k8splus-script-{{ robin_version }}.sh pre-upgrade --host-type=physical --silent --ip-protocol={{ ip_protocol }}
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master'][0] and upgrade_release_major_version == '5.4.3'
-  tags: [v5.4hf3,v5.4hf5]
+
 
 # for 5.5.0 upgrade
 - name: K8splus Pre upgrade
@@ -34,4 +34,4 @@
   async: 3600
   poll: 60
   when: inventory_hostname in groups['primary-master'][0] and upgrade_release_major_version == '5.5.0'
-  tags: [v5.4hf3,v5.4hf5]
+  

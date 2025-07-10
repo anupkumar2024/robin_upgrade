@@ -11,7 +11,7 @@ artifactory_folder: /root/build/
 robin_user: admin
 robin_pass: Robin123
 ip_protocol: ipv4
-ansible_user: anupkumar
+ansible_user: root
 
 # For HA install
 vip: 10.9.111.111

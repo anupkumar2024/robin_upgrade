@@ -80,3 +80,9 @@ pip install paramiko
 ansible-playbook playbook.yml -c paramiko --ask-pass --tags non-ha-install --extra-vars "@config.yaml"
 ansible all -m ansible.builtin.yum -a "name=bind-utils state=present" -u root  --ask-pass -c paramiko
 ansible all -m shell -a uptime  -u root --ask-pass
+
+## If below error comes :
+vnode-111-3 | FAILED | rc=-1 >>
+to use the 'ssh' connection type with passwords, you must install the sshpass program
+
+run with -c paramiko
