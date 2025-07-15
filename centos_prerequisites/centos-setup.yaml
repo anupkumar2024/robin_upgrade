@@ -50,6 +50,11 @@
       debug:
         msg: "{{ mod_output }}"
 
+    - name: Add user
+      user:
+        name: anupkumar
+        password: anup123 | password_hash('sha512')   
+
     - name: Configure sudo access for anupkumar
       lineinfile:
         path: "/etc/sudoers.d/anupkumar"
