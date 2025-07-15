@@ -55,7 +55,7 @@
 
 - set_fact:
     current_release_major_version_only: "{{ release | regex_replace('\\.\\d+$', '') | float }}"
-  tags: [v5.5.0, non-ha-robin-script-install-primary-5.5.0] 
+  tags: [v5.5.0, non-ha-robin-script-install-primary-5.5.0, non-ha-robin-script-install-primary] 
   
 - name: Run robin script on primary master node
   shell: |

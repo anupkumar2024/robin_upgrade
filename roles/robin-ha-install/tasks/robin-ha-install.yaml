@@ -95,6 +95,10 @@
     var: k8splus_script_output.stdout
   when: inventory_hostname in groups['primary-master']
 
+- set_fact:
+    current_release_major_version_only: "{{ release | regex_replace('\\.\\d+$', '') | float }}"
+  tags: [v5.5.0, non-ha-robin-script-install-primary-5.5.0, non-ha-robin-script-install-primary] 
+
 - name: Run robin script on primary master node
   shell: |
     source /root/.bash_profile
@@ -105,7 +109,7 @@
   register: robin_script_output   
   async: 3600
   poll: 60
-  when: inventory_hostname in groups['primary-master'] and release != '5.5.0'
+  when: inventory_hostname in groups['primary-master'] and current_release_major_version_only | float < 5.5
   tags: [v5.4, ha-install-robin-script]
 
 # for 5.5.0
@@ -118,7 +122,7 @@
     executable: /bin/bash
   async: 3600
   poll: 60
-  when: inventory_hostname in groups['primary-master'] and release == '5.5.0'
+  when: inventory_hostname in groups['primary-master'] and current_release_major_version_only | float >= 5.5
   tags: [v5.5.0, ha-install-robin-script-5.5.0] 
 
 - name: Display output of robin script
